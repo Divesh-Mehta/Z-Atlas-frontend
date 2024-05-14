@@ -37,12 +37,27 @@ const Home = ({setData}) => {
     try {
       const body = {source, destination}
       console.log(body);
-      await axios.post('https://weary-purse-eel.cyclic.app/api', body)
-        .then(async(re) => {
-          console.log(re.data.data);
-          await localStorage.setItem('data', JSON.stringify(re.data.data));
-        })
+      // await axios.post('https://weary-purse-eel.cyclic.app/api', body)
+      //   .then(async(re) => {
+      //     console.log(re.data.data);
+      //     await localStorage.setItem('data', JSON.stringify(re.data.data));
+      //   })
+      let data={
+        src:"",
+        dest:""
+      }
+      await axios.get(`https://api.opencagedata.com/geocode/v1/json?q=${body.source}&key=dd5aca3fa0b749c1a62a35db921195fe&language=en&pretty=1`)
+         .then((res)=>{
+             //console.log(res.data.results[0].geometry);
+             data.src = [res.data.results[0].geometry.lat, res.data.results[0].geometry.lng];
+         })
 
+         await axios.get(`https://api.opencagedata.com/geocode/v1/json?q=${body.destination}&key=dd5aca3fa0b749c1a62a35db921195fe&language=en&pretty=1`)
+         .then((res)=>{
+             //console.log(res.data.results[0].geometry);
+             data.dest = [res.data.results[0].geometry.lat, res.data.results[0].geometry.lng];
+         })
+      localStorage.setItem('data', JSON.stringify(data));
       if (localStorage.getItem('data')) {
         const data = JSON.parse(localStorage.getItem('data'));
         if (contractInstance && accountAddress) {
@@ -58,7 +73,7 @@ const Home = ({setData}) => {
       console.log(error);
       Swal.fire({
         title: 'Oops...',
-        text: 'Kindly type correct areas name !',
+        text: error,
       })
     }
   }
@@ -110,11 +125,7 @@ const Home = ({setData}) => {
                     </div>
                     <div className=' w-[30vw]'>
                       <div className='w-[15vw] h-[20vh] rounded-xl bg-white'></div>
-                      <p className='text-xl font-extrabold ml-[5vw] text-[#4E4B5C] mt-10'>Mayank</p>
-                    </div>
-                    <div className=' w-[30vw]'>
-                      <div className='w-[15vw] h-[20vh] rounded-xl bg-white'></div>
-                      <p className='text-xl font-extrabold ml-[4vw] text-[#4E4B5C] mt-10'>Shalini Singh</p>
+                      <p className='text-xl font-extrabold ml-[5vw] text-[#4E4B5C] mt-10'>Divesh Mehta</p>
                     </div>
                   </div>
                 </div>
