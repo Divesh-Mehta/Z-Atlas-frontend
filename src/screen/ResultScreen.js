@@ -34,26 +34,56 @@ const ResultScreen = ({data}) => {
         [12.91, 80.10]
     ];
     
-    return (
-        <div>
-            <Nav />
-            <div className=' absolute w-[60vw] h-[70vh] ml-[20vw] overflow-hidden mt-[10vh] border-4 border-[#4E4B5C] rounded-xl'>
-                <Map height={570} defaultCenter={source} defaultZoom={15}>
-                    <Marker width={50} anchor={source} color="#366399"/>
-                    <Marker width={50} anchor={destination} color="#366399"/>
-                    {
-                        coordinates.map((e)=>{
-                            console.log(e);
-                            return (
-                                <Marker width={25} anchor={e.reverse()} color="#366399"/>
-                            )
-                        })
-                    }
-
-                </Map>
-            </div>
-            <div className='bg-[#AECDF7] h-[50vh] mt-[40vh]'></div>
+        const [center, setCenter] = useState([13.01, 80.21])
+  const [zoom, setZoom] = useState(11)
+  const [hue, setHue] = useState(0)
+//   const color = `hsl(${hue % 360}deg 39% 70%)`
+  return (
+    <div>
+    <Nav />
+        <div className=' absolute w-[60vw] h-[70vh] ml-[20vw] overflow-hidden mt-[10vh] border-4 border-[#4E4B5C] rounded-xl'>
+    <Map 
+      height={500}
+      center={center} 
+      zoom={zoom} 
+      onBoundsChanged={({ center, zoom }) => { 
+        setCenter(center) 
+        setZoom(zoom) 
+      }} 
+    >
+      {
+        coordinates.map((e,i)=>{
+            return(
+            <Marker 
+            key={i}
+            width={30}
+            anchor={e}
+            color={i === 1 || i === coordinates.length -1 ? "#00ff00" : "#366399"}/>
+            )
+        })
+      }
+        </Map>
         </div>
+        </div>
+        // <div>
+        //     <Nav />
+        //     <div className=' absolute w-[60vw] h-[70vh] ml-[20vw] overflow-hidden mt-[10vh] border-4 border-[#4E4B5C] rounded-xl'>
+        //         <Map height={570} defaultCenter={source} defaultZoom={15}>
+        //             <Marker width={50} anchor={source} color="#366399"/>
+        //             <Marker width={50} anchor={destination} color="#366399"/>
+        //             {
+        //                 coordinates.map((e)=>{
+        //                     console.log(e);
+        //                     return (
+        //                         <Marker width={25} anchor={e.reverse()} color="#366399"/>
+        //                     )
+        //                 })
+        //             }
+
+        //         </Map>
+        //     </div>
+        //     <div className='bg-[#AECDF7] h-[50vh] mt-[40vh]'></div>
+        // </div>
     )
 }
 
